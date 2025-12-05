@@ -309,13 +309,12 @@ footer p {
 /* ---------- Mobile layout ---------- */
 
 @media (max-width: 768px) {
-  .barba-page,
   .landing-page,
   .landing-description {
-    padding-left: 30px;
-    padding-right: 30px;
+    padding-left: 20px;
+    padding-right: 20px;
   }
-
+  
   nav {
     position: sticky;
     top: 0;
@@ -327,16 +326,16 @@ footer p {
     justify-content: space-between;
   }
 
-  /* Show hamburger */
+  /* show hamburger */
   .nav-toggle {
     display: block;
   }
 
-  /* Full-screen overlay menu */
+  /* full-screen overlay menu */
   nav ul {
     position: fixed;
-    inset: 0;                         /* fills the screen */
-    background: #ffffff;              /* or try #f4efb7 */
+    inset: 0;                         
+    background: #ffffff;              
     
     flex-direction: column;
     justify-content: center;
@@ -353,13 +352,13 @@ footer p {
     z-index: 900;
   }
 
-  /* When nav is open */
+  /* when nav is open */
   nav.nav-open ul {
     opacity: 1;
     pointer-events: auto;
   }
 
-  /* Fade-in link style */
+  /* fade-in link style */
   nav ul li a {
     font-size: 28px;
     color: #717553;
@@ -375,12 +374,12 @@ footer p {
     transform: none;  
   }
 
-  /* Hide underline on overlay */
+  /* hide underline on overlay */
   nav a.active::after {
     display: none;
   }
 
-  /* ✕ close button */
+  /* close button */
   .nav-close {
     position: fixed;
     top: 16px;
