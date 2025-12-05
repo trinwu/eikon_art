@@ -1,0 +1,418 @@
+/* ---------- Base layout ---------- */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  font-family: "Gamja Flower", sans-serif;
+  background-color: #ffffff;
+  color: #717553;
+  line-height: 1.5;
+}
+
+/* ---------- Nav ---------- */
+
+nav {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: #ffffff; 
+  padding-top: 24px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid rgba(113, 117, 83, 0.18); /* subtle border */
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 35px;
+  justify-content: center;
+  margin-bottom: 24px;
+  padding: 0;
+}
+
+nav a {
+  display: inline-block;
+  text-decoration: none;
+  color: #717553;
+  font-size: 18px;
+  text-transform: lowercase;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+}
+
+nav a:hover {
+  opacity: 0.7;
+  transform: translateY(-2px);
+}
+
+nav a.active {
+  position: relative;
+  opacity: 1 !important;
+}
+
+nav a.active::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -4px;
+  transform: translateX(-50%);
+
+  width: 110%;
+  height: 2px;
+
+  background: #717553;
+  border-radius: 2px;
+  opacity: 0.8;
+}
+
+/* hamburger button (hidden on desktop) */
+.nav-toggle {
+  display: none; /* shown only on small screens via media query */
+  background: transparent;
+  border: none;
+  padding: 4px 8px;
+  cursor: pointer;
+  margin-left: 16px;
+}
+
+.nav-toggle span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: #717553;
+  border-radius: 999px;
+  margin: 4px 0;
+}
+
+nav.nav-open .nav-toggle span:nth-child(1) {
+  transform: translateY(6px) rotate(45deg);
+}
+
+nav.nav-open .nav-toggle span:nth-child(2) {
+  opacity: 0;
+}
+
+nav.nav-open .nav-toggle span:nth-child(3) {
+  transform: translateY(-6px) rotate(-45deg);
+}
+
+.nav-close {
+  display: none;
+}
+
+/* ---------- Page content ---------- */
+
+h1 {
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+p {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+/* ---------- Landing Page ---------- */
+
+.landing-page {
+  display: block;
+  max-width: 600px;
+  margin: 100px auto;
+  padding-bottom: 60px; 
+}
+
+.landing-page h1 {
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+
+.landing-page p {
+  font-size: 18px;
+  margin-bottom: 32px;
+}
+
+.landing-description{
+  text-align: center;
+  font-size: 22px;
+  line-height: 1.4;
+  max-width: 455px;
+  margin: 0 auto 40px;
+  position: relative;
+}
+
+.landing-description h2 {
+  margin-bottom: 12px;
+}
+
+.landing-description p {
+  font-size: 20px;
+}
+
+.landing-description .verse{
+  font-size: 16px;
+  font-style: italic;
+  text-align: center;
+  margin-bottom: 20px;
+  opacity: 0.75;
+}
+
+.landing-btns {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+}
+
+.btn {
+  display: inline-block;
+  background: #717553;             
+  color: #F8F6EC;                    
+  font-size: 20px;
+  padding: 14px 34px;
+  border: none;
+  border-radius: 22px;            
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+  min-width: 220px;  
+  text-align: center;
+}
+
+.btn:hover {
+  opacity: 0.85;
+  transform: translateY(-2px);
+}
+
+.btn:active {
+  transform: translateY(0);           
+  opacity: 0.95;
+}
+
+/* ---------- Footer ---------- */
+
+footer {
+  padding: 45px 0;
+  text-align: center;
+  background: #f4efb7;
+  color: #717553;
+  font-size: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+footer p {
+  margin: 0;
+}
+
+.footer-links {
+  margin-top: 6px;
+  display: flex;
+  justify-content: center;
+}
+
+.footer-links a {
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* The icon itself */
+.icon {
+  width: 24px;
+  height: 24px;
+  stroke: #717553;        
+  stroke-width: 1.8;
+  fill: none;          
+  transition: transform 0.25s ease, opacity 0.25s ease;
+}
+
+/* Flash dot stays filled */
+.icon circle[fill] {
+  fill: #000;
+}
+
+/* Hover effect */
+.footer-links a:hover .icon {
+  opacity: 0.7;
+  transform: translateY(-2px);
+}
+
+/* Prevent layout shifting during page transitions */
+#barba-wrapper, .barba-page {
+  flex: 1;            /* take remaining space */
+  display: block;
+  width: 100%;
+}
+
+/* ---------- Loading screen ---------- */
+
+#loader {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: #f4efb7; /* matches footer/bg vibe */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.4s ease;
+}
+
+#loader.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.loader-inner {
+  text-align: center;
+  color: #717553;
+  font-family: "Gamja Flower", sans-serif;
+}
+
+.loader-circle {
+  width: 60px;
+  height: 60px;
+  border-radius: 999px;
+  border: 3px solid #717553;
+  border-top-color: transparent;
+  margin: 0 auto 12px;
+  animation: spin 1s linear infinite;
+}
+
+.loader-text {
+  font-size: 26px;
+  margin-bottom: 4px;
+}
+
+.loader-subtext {
+  font-size: 16px;
+  opacity: 0.8;
+}
+
+/* spinner animation */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ---------- Mobile layout ---------- */
+
+@media (max-width: 768px) {
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: #ffffff;
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  /* Show hamburger */
+  .nav-toggle {
+    display: block;
+  }
+
+  /* Full-screen overlay menu */
+  nav ul {
+    position: fixed;
+    inset: 0;                         /* fills the screen */
+    background: #ffffff;              /* or try #f4efb7 */
+    
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 28px;
+
+    padding: 0;
+    margin: 0;
+    list-style: none;
+
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.35s ease;
+    z-index: 900;
+  }
+
+  /* When nav is open */
+  nav.nav-open ul {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* Fade-in link style */
+  nav ul li a {
+    font-size: 28px;
+    color: #717553;
+  }
+
+  /* disable the desktop gap */
+  nav ul {
+    gap: 20px;
+  }
+
+  nav ul li a:hover {
+    opacity: 0.7;
+    transform: none;  
+  }
+
+  /* Hide underline on overlay */
+  nav a.active::after {
+    display: none;
+  }
+
+  /* ✕ close button */
+  .nav-close {
+    position: fixed;
+    top: 16px;
+    left: 20px;           
+    z-index: 1001;
+  
+    display: none;
+    background: transparent;
+    border: none;
+  
+    font-size: 42px;       
+    line-height: 1;
+    color: #717553;
+    cursor: pointer;
+  }
+
+  nav.nav-open .nav-close {
+    display: block;           
+  }
+
+  /* home page buttons stacked on mobile */
+  .landing-btns {
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 20px;
+    align-items: center;
+  }
+
+  .btn {
+    margin: 0 auto;   
+  }
+
+  /* landing page spacing a bit tighter */
+  .landing-page {
+    margin: 60px auto 40px auto;
+    padding-bottom: 40px;
+  }
+
+  .landing-page h1 {
+    font-size: 36px;
+  }
+}
