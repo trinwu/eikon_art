@@ -309,7 +309,6 @@ footer p {
 /* ---------- Mobile layout ---------- */
 
 @media (max-width: 768px) {
-  .landing-page,
   .landing-description {
     padding-left: 20px;
     padding-right: 20px;
