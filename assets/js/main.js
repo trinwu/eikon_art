@@ -42,8 +42,8 @@ document.addEventListener("DOMContentLoaded", function () {
     loader.classList.add("hidden");
   }
 
-  // 🔒 SAFETY: always hide loader after 1.5s even if something breaks
-  setTimeout(hideLoader, 1500);
+  // SAFETY: always hide loader even if something breaks
+  setTimeout(hideLoader, 800);
 
   // ---------- ACTIVE LINK ----------
   function updateActiveLink() {
@@ -55,12 +55,10 @@ document.addEventListener("DOMContentLoaded", function () {
       const href = link.getAttribute("href");
       if (!href) return;
 
-      // match /index.html, /about.html, etc.
       if (path.endsWith(href)) {
         link.classList.add("active");
       }
 
-      // handle root like / or /repo/ for index.html
       if (href === "index.html" && (path === "/" || path.endsWith("/"))) {
         link.classList.add("active");
       }
