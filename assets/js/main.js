@@ -1,91 +1,102 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const loader = document.getElementById("loader");
+  const loader = document.getElementById("loader");
 
-    // mobile nav toggler
-    const nav = document.querySelector("nav");
-    const navToggle = document.querySelector(".nav-toggle");
-    const navClose = document.querySelector(".nav-close");
-    const navLinks = document.querySelectorAll("nav ul li a");
+  // ---------- MOBILE NAV ----------
+  const nav = document.querySelector("nav");
+  const navToggle = document.querySelector(".nav-toggle");
+  const navClose = document.querySelector(".nav-close");
+  const navLinks = document.querySelectorAll("nav ul li a");
 
-    if (nav && navToggle) {
-      // open/close with hamburger
-      navToggle.addEventListener("click", () => {
-        const isOpen = nav.classList.toggle("nav-open");
-        navToggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
+  if (nav && navToggle) {
+    // open/close with hamburger
+    navToggle.addEventListener("click", () => {
+      const isOpen = nav.classList.toggle("nav-open");
+      navToggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
+    });
+
+    // close with ✕ button
+    if (navClose) {
+      navClose.addEventListener("click", () => {
+        nav.classList.remove("nav-open");
+        navToggle.setAttribute("aria-expanded", "false");
       });
+    }
 
-      // close with ✕ button
-      if (navClose) {
-        navClose.addEventListener("click", () => {
-          nav.classList.remove("nav-open");
-          navToggle.setAttribute("aria-expanded", "false");
-        });
+    // close when clicking a link
+    navLinks.forEach((link) => {
+      link.addEventListener("click", () => {
+        nav.classList.remove("nav-open");
+        navToggle.setAttribute("aria-expanded", "false");
+      });
+    });
+  }
+
+  // ---------- LOADER HELPERS ----------
+  function showLoader() {
+    if (!loader) return;
+    loader.classList.remove("hidden");
+  }
+
+  function hideLoader() {
+    if (!loader) return;
+    loader.classList.add("hidden");
+  }
+
+  // 🔒 SAFETY: always hide loader after 1.5s even if something breaks
+  setTimeout(hideLoader, 1500);
+
+  // ---------- ACTIVE LINK ----------
+  function updateActiveLink() {
+    const path = window.location.pathname; // e.g. /username/repo/index.html
+    const links = document.querySelectorAll("nav a[href]");
+
+    links.forEach((link) => {
+      link.classList.remove("active");
+      const href = link.getAttribute("href");
+      if (!href) return;
+
+      // match /index.html, /about.html, etc.
+      if (path.endsWith(href)) {
+        link.classList.add("active");
       }
 
-      // close when clicking a link
-      navLinks.forEach(link => {
-        link.addEventListener("click", () => {
-          nav.classList.remove("nav-open");
-          navToggle.setAttribute("aria-expanded", "false");
-        });
-      });
-    }
+      // handle root like / or /repo/ for index.html
+      if (href === "index.html" && (path === "/" || path.endsWith("/"))) {
+        link.classList.add("active");
+      }
+    });
+  }
 
-    function showLoader() {
-      if (!loader) return;
-      loader.classList.remove("hidden");
-    }
-  
-    function hideLoader() {
-      if (!loader) return;
-      loader.classList.add("hidden");
-    }
-  
-    // Highlight the current nav link based on URL
-    function updateActiveLink() {
-      const path = window.location.pathname; // e.g. "/folder/home.html"
-      const links = document.querySelectorAll("nav a[href]");
-  
-      links.forEach((link) => {
-        link.classList.remove("active");
-        const href = link.getAttribute("href");
-  
-        if (!href) return;
-  
-        // If the current path ends with the link's href (home.html, about.html, etc.)
-        if (path.endsWith(href)) {
-          link.classList.add("active");
-        }
-      });
-    }
-  
-    // If Barba isn't loaded, just hide loader + set active link and stop
-    if (typeof barba === "undefined") {
-      hideLoader();
-      updateActiveLink();
-      return;
-    }
-  
+  // ---------- NO BARBA? JUST FALL BACK ----------
+  if (typeof barba === "undefined") {
+    hideLoader();
+    updateActiveLink();
+    return;
+  }
+
+  // ---------- BARBA SETUP WITH TRY/CATCH ----------
+  try {
     barba.init({
       transitions: [
         {
           name: "fade-with-loader",
           sync: true,
-  
+
           // First page load
           once({ next }) {
             updateActiveLink();
             return fadeIn(next.container).then(() => {
-              setTimeout(hideLoader, 800); // loader stays a bit
+              setTimeout(hideLoader, 800);
             });
           },
-  
+
           leave({ current }) {
             showLoader();
             return fadeOut(current.container);
           },
-  
+
           enter({ next }) {
+            updateActiveLink();
             return fadeIn(next.container).then(() => {
               setTimeout(hideLoader, 800);
             });
@@ -93,33 +104,36 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       ]
     });
-  
-    // After every transition, make sure active link is updated
+
     barba.hooks.after(() => {
       updateActiveLink();
     });
-  
-    // Helper animations
-    function fadeOut(container) {
-      return new Promise((resolve) => {
-        container.style.opacity = "1";
-        container.style.transition = "opacity 0.25s ease";
-        requestAnimationFrame(() => {
-          container.style.opacity = "0";
-        });
-        container.addEventListener("transitionend", resolve, { once: true });
-      });
-    }
-  
-    function fadeIn(container) {
-      return new Promise((resolve) => {
+  } catch (err) {
+    console.error("Barba init failed:", err);
+    hideLoader();
+    updateActiveLink();
+  }
+
+  // ---------- FADE HELPERS ----------
+  function fadeOut(container) {
+    return new Promise((resolve) => {
+      container.style.opacity = "1";
+      container.style.transition = "opacity 0.25s ease";
+      requestAnimationFrame(() => {
         container.style.opacity = "0";
-        container.style.transition = "opacity 0.25s ease";
-        requestAnimationFrame(() => {
-          container.style.opacity = "1";
-        });
-        container.addEventListener("transitionend", resolve, { once: true });
       });
-    }
-  });
-  
+      container.addEventListener("transitionend", resolve, { once: true });
+    });
+  }
+
+  function fadeIn(container) {
+    return new Promise((resolve) => {
+      container.style.opacity = "0";
+      container.style.transition = "opacity 0.25s ease";
+      requestAnimationFrame(() => {
+        container.style.opacity = "1";
+      });
+      container.addEventListener("transitionend", resolve, { once: true });
+    });
+  }
+});
