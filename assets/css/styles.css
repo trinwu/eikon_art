@@ -309,6 +309,13 @@ footer p {
 /* ---------- Mobile layout ---------- */
 
 @media (max-width: 768px) {
+  .barba-page,
+  .landing-page,
+  .landing-description {
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+
   nav {
     position: sticky;
     top: 0;
