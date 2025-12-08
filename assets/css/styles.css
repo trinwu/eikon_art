@@ -14,9 +14,22 @@ body {
   display: flex;
   flex-direction: column;
   font-family: "Gamja Flower", sans-serif;
-  background-color: #ffffff;
   color: #717553;
   line-height: 1.5;
+  background-color: #F8F6EC; /* base beige color */
+  background-image: url("../img/paper.JPG"); 
+  background-size: 400px;     
+  background-repeat: repeat;
+  background-attachment: fixed; 
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: rgba(248, 246, 236, 0.5); /* adjustable opacity color */
+  z-index: -1;
+  pointer-events: none;
 }
 
 /* ---------- Nav ---------- */
@@ -25,7 +38,7 @@ nav {
   position: sticky;
   top: 0;
   z-index: 1000;
-  background: #ffffff; 
+  background: #F8F6EC; 
   padding-top: 24px;
   padding-bottom: 8px;
   border-bottom: 2px solid rgba(113, 117, 83, 0.18); /* subtle border */
